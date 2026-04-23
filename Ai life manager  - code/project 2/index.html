@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LifeAI — AI Life Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ═══════════════════════════════════
+       SIDEBAR
+  ════════════════════════════════════ -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-icon">🧠</div>
+      <div>
+        <div class="logo-text">LifeAI</div>
+        <div class="logo-sub">AI LIFE MANAGER</div>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Main</div>
+      <div class="nav-item active" onclick="nav('dashboard',this)">
+        <svg class="icon" fill="none" viewBox="0 0 18 18">
+          <rect x="1" y="1" width="7" height="7" rx="2" fill="currentColor" opacity=".7"/>
+          <rect x="10" y="1" width="7" height="7" rx="2" fill="currentColor"/>
+          <rect x="1" y="10" width="7" height="7" rx="2" fill="currentColor"/>
+          <rect x="10" y="10" width="7" height="7" rx="2" fill="currentColor" opacity=".7"/>
+        </svg>
+        Dashboard
+      </div>
+      <div class="nav-item" onclick="nav('schedule',this)">
+        <svg class="icon" fill="none" viewBox="0 0 18 18">
+          <rect x="2" y="3" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M6 1v3M12 1v3M2 7h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Schedule
+        <span class="nav-badge" id="schedBadge">8</span>
+      </div>
+      <div class="nav-item" onclick="nav('habits',this)">
+        <svg class="icon" fill="none" viewBox="0 0 18 18">
+          <path d="M9 2L11 7h5l-4 3 1.5 5L9 12l-4.5 3L6 10 2 7h5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+        Habits
+      </div>
+      <div class="nav-item" onclick="nav('health',this)">
+        <svg class="icon" fill="none" viewBox="0 0 18 18">
+          <path d="M9 15s-7-4.5-7-9a5 5 0 0110 0 5 5 0 0110 0c0 4.5-7 9-7 9" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M5 9h2l2-3 2 5 2-2h2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Health
+      </div>
+      <div class="nav-item" onclick="nav('goals',this)">
+        <svg class="icon" fill="none" viewBox="0 0 18 18">
+          <circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="9" cy="9" r="3.5" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="9" cy="9" r="1" fill="currentColor"/>
+        </svg>
+        Goals
+      </div>
+      <div class="nav-item" id="navProfile" onclick="nav('profile',this)">
+        <svg class="icon" fill="none" viewBox="0 0 18 18">
+          <circle cx="9" cy="9" r="7" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M6 8h6M9 6v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Profile
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">AI</div>
+      <div class="nav-item" onclick="nav('assistant',this)">
+        <svg class="icon" fill="none" viewBox="0 0 18 18">
+          <path d="M9 1C4.6 1 1 4.1 1 8c0 1.8.7 3.4 1.9 4.6L2 17l4.4-1.4C7.5 16 8.2 16.1 9 16.1c4.4 0 8-3.1 8-7.1S13.4 1 9 1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          <circle cx="6" cy="8" r="1" fill="currentColor"/>
+          <circle cx="9" cy="8" r="1" fill="currentColor"/>
+          <circle cx="12" cy="8" r="1" fill="currentColor"/>
+        </svg>
+        AI Assistant
+      </div>
+      <div class="nav-item" onclick="nav('devices',this)">
+        <svg class="icon" fill="none" viewBox="0 0 18 18">
+          <rect x="1" y="4" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M11 7h3l3 3-3 3h-3" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+        Smart Devices
+      </div>
+    </div>
+
+    <div class="sidebar-bottom">
+      <div class="user-card" onclick="nav('profile', document.getElementById('navProfile'))">
+        <div class="avatar" id="sidebarAvatar">HN</div>
+        <div class="user-info">
+          <div class="user-name" id="sidebarUserName">Hanan</div>
+          <div class="user-plan" id="sidebarUserPlan">Pro Plan ✨</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════════════════
+       MAIN CONTENT
+  ════════════════════════════════════ -->
+  <main class="main">
+
+    <!-- ─────────── DASHBOARD ─────────── -->
+    <div id="page-dashboard" class="page active">
+      <div class="page-header">
+        <div>
+          <div class="greeting" id="greetingText">Good morning, <span>Hanan</span> ☀️</div>
+          <div class="page-sub" id="dashDate">Loading date...</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <div class="notif-btn" onclick="showNotifications()" title="Notifications">
+            🔔<div class="notif-dot"></div>
+          </div>
+          <button class="btn btn-primary" onclick="openModal('event')">+ Add Event</button>
+        </div>
+      </div>
+
+      <div class="ai-insight">
+        <div class="ai-icon">🤖</div>
+        <div style="flex:1">
+          <div class="ai-label">AI DAILY INSIGHT</div>
+          <div class="ai-msg" id="dashInsight">You've completed 6 of 7 habits this week — great streak! Your deep work sessions peak at 10 AM. I've blocked 2 hours for your SPM assignment tomorrow morning based on your focus patterns.</div>
+        </div>
+        <button class="btn btn-ghost btn-sm" onclick="refreshInsight()" style="flex-shrink:0">↻ Refresh</button>
+      </div>
+
+      <div class="grid-4">
+        <div class="stat-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div class="stat-label">Today's Tasks</div>
+            <div class="stat-icon" style="background:rgba(99,102,241,0.12)">✅</div>
+          </div>
+          <div class="stat-value" id="statTasks">5</div>
+          <div class="stat-change up">▲ events today</div>
+        </div>
+        <div class="stat-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div class="stat-label">Active Habits</div>
+            <div class="stat-icon" style="background:rgba(45,212,191,0.1)">⚡</div>
+          </div>
+          <div class="stat-value" id="statHabits">6</div>
+          <div class="stat-change up">▲ <span id="statHabitRate">86</span>% rate</div>
+        </div>
+        <div class="stat-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div class="stat-label">Sleep Score</div>
+            <div class="stat-icon" style="background:rgba(96,165,250,0.1)">🌙</div>
+          </div>
+          <div class="stat-value">82</div>
+          <div class="stat-change up">▲ +5 vs last week</div>
+        </div>
+        <div class="stat-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div class="stat-label">Goal Progress</div>
+            <div class="stat-icon" style="background:rgba(251,191,36,0.1)">🎯</div>
+          </div>
+          <div class="stat-value">64%</div>
+          <div class="stat-change up">▲ 3 on track</div>
+        </div>
+      </div>
+
+      <div class="grid-2-1">
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+            <div class="card-title">Today's Schedule</div>
+            <span class="tag tag-purple" id="upcomingCount">5 events</span>
+          </div>
+          <div class="timeline" id="dashTimeline"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+              <div class="card-title">Weekly Activity</div>
+              <span style="font-size:11px;color:var(--text3)">This week</span>
+            </div>
+            <div class="mini-bar" id="activityBar"></div>
+            <div style="display:flex;justify-content:space-between;margin-top:6px">
+              <span style="font-size:10px;color:var(--text3)">Mon</span>
+              <span style="font-size:10px;color:var(--text3)">Tue</span>
+              <span style="font-size:10px;color:var(--text3)">Wed</span>
+              <span style="font-size:10px;color:var(--text3)">Thu</span>
+              <span style="font-size:10px;color:var(--text3)">Fri</span>
+              <span style="font-size:10px;color:var(--text3)">Sat</span>
+              <span style="font-size:10px;color:var(--text3)">Sun</span>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title" style="margin-bottom:12px">Top Habits Today</div>
+            <div style="display:flex;flex-direction:column;gap:10px" id="topHabitsToday"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────── SCHEDULE ─────────── -->
+    <div id="page-schedule" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Schedule</div>
+          <div class="page-sub" id="schedWeekLabel">Loading...</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-ghost" onclick="navWeek(-1)">◀ Prev</button>
+          <button class="btn btn-ghost" onclick="navWeek(0)">Today</button>
+          <button class="btn btn-ghost" onclick="navWeek(1)">Next ▶</button>
+          <button class="btn btn-primary" onclick="openModal('event')">+ Add Event</button>
+        </div>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden">
+        <div class="week-header" id="calHeader" style="border-bottom:1px solid var(--border)"></div>
+        <div style="overflow-y:auto;max-height:430px">
+          <div class="cal-grid" id="calGrid"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────── HABITS ─────────── -->
+    <div id="page-habits" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Habits</div>
+          <div class="page-sub">Track your daily routines · Week 13</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('habit')">+ New Habit</button>
+      </div>
+
+      <div class="grid-3">
+        <div class="stat-card">
+          <div class="stat-label">Weekly Completion</div>
+          <div class="stat-value" id="habitCompRate">86%</div>
+          <div class="progress-bar" style="margin-top:10px">
+            <div class="progress-fill" id="habitCompBar" style="width:86%;background:var(--green)"></div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Longest Streak</div>
+          <div class="stat-value" id="longestStreak">22 days 🔥</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px" id="longestStreakName">Morning routine</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Perfect Days</div>
+          <div class="stat-value" id="perfectDays">4 / 7</div>
+          <div class="progress-bar" style="margin-top:10px">
+            <div class="progress-fill" style="width:57%;background:var(--accent)"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <div class="card-title">Daily Habits</div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <div style="display:flex;gap:8px">
+              <span style="font-size:10.5px;color:var(--text3)">M</span>
+              <span style="font-size:10.5px;color:var(--text3)">T</span>
+              <span style="font-size:10.5px;color:var(--text3)">W</span>
+              <span style="font-size:10.5px;color:var(--text3)">T</span>
+              <span style="font-size:10.5px;color:var(--text3)">F</span>
+              <span style="font-size:10.5px;color:var(--text3)">S</span>
+              <span style="font-size:10.5px;color:var(--text3)">S</span>
+            </div>
+          </div>
+        </div>
+        <div id="habitList"></div>
+      </div>
+    </div>
+
+    <!-- ─────────── HEALTH ─────────── -->
+    <div id="page-health" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Health Tracking</div>
+          <div class="page-sub">Your wellness overview · March 2026</div>
+        </div>
+        <button class="btn btn-ghost" onclick="syncDevices()">🔄 Sync Devices</button>
+      </div>
+
+      <div class="grid-4">
+        <div class="stat-card">
+          <div class="stat-label">Steps Today</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+            <div class="stat-value" id="stepsVal">8,420</div>
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <button class="step-btn" onclick="addSteps(500)">+</button>
+              <button class="step-btn" onclick="addSteps(-500)">−</button>
+            </div>
+          </div>
+          <div class="progress-bar" style="margin-top:8px">
+            <div class="progress-fill" id="stepsBar" style="width:84%;background:var(--teal)"></div>
+          </div>
+          <div style="font-size:11px;color:var(--text3);margin-top:5px">Goal: 10,000</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Active Calories</div>
+          <div class="stat-value">420</div>
+          <div class="progress-bar" style="margin-top:8px">
+            <div class="progress-fill" style="width:70%;background:var(--coral)"></div>
+          </div>
+          <div style="font-size:11px;color:var(--text3);margin-top:5px">Goal: 600 kcal</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Water Intake</div>
+          <div class="stat-value" id="waterVal">1.5L</div>
+          <div class="water-cups" id="waterCups"></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Sleep Last Night</div>
+          <div class="stat-value">7.2h</div>
+          <div class="progress-bar" style="margin-top:8px">
+            <div class="progress-fill" style="width:90%;background:var(--accent2)"></div>
+          </div>
+          <div style="font-size:11px;color:var(--text3);margin-top:5px">Target: 8h</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title" style="margin-bottom:14px">Vitals</div>
+          <div class="metric-row">
+            <div class="metric-label"><div class="metric-dot" style="background:var(--coral)"></div>Heart Rate</div>
+            <div><span class="metric-val" id="heartRate">72</span><span class="metric-unit">bpm</span></div>
+          </div>
+          <div class="metric-row">
+            <div class="metric-label"><div class="metric-dot" style="background:var(--blue)"></div>Blood Oxygen</div>
+            <div><span class="metric-val">98</span><span class="metric-unit">%</span></div>
+          </div>
+          <div class="metric-row">
+            <div class="metric-label"><div class="metric-dot" style="background:var(--amber)"></div>Stress Level</div>
+            <div><span class="metric-val">Low</span></div>
+          </div>
+          <div class="metric-row">
+            <div class="metric-label"><div class="metric-dot" style="background:var(--green)"></div>HRV</div>
+            <div><span class="metric-val">54</span><span class="metric-unit">ms</span></div>
+          </div>
+          <div class="metric-row">
+            <div class="metric-label"><div class="metric-dot" style="background:var(--accent2)"></div>Deep Sleep</div>
+            <div><span class="metric-val">1.8</span><span class="metric-unit">h</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="margin-bottom:14px">Nutrition Summary</div>
+          <div class="metric-row">
+            <div class="metric-label">Calories</div>
+            <div><span class="metric-val" id="calsNutr">1,640</span><span class="metric-unit">/ 2,100</span></div>
+          </div>
+          <div class="progress-bar" style="margin-bottom:12px">
+            <div class="progress-fill" style="width:78%;background:var(--amber)"></div>
+          </div>
+          <div class="metric-row">
+            <div class="metric-label">Protein</div>
+            <div><span class="metric-val">82</span><span class="metric-unit">g / 120g</span></div>
+          </div>
+          <div class="progress-bar" style="margin-bottom:12px">
+            <div class="progress-fill" style="width:68%;background:var(--teal)"></div>
+          </div>
+          <div class="metric-row">
+            <div class="metric-label">Carbs</div>
+            <div><span class="metric-val">210</span><span class="metric-unit">g / 280g</span></div>
+          </div>
+          <div class="progress-bar" style="margin-bottom:12px">
+            <div class="progress-fill" style="width:75%;background:var(--accent)"></div>
+          </div>
+          <button class="btn btn-ghost btn-sm" style="margin-top:14px;width:100%" onclick="openModal('nutrition')">+ Log Meal</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────── GOALS ─────────── -->
+    <div id="page-goals" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Goals</div>
+          <div class="page-sub">Track your long-term objectives</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('goal')">+ New Goal</button>
+      </div>
+      <div id="goalsList"></div>
+    </div>
+
+    <!-- ─────────── PROFILE ─────────── -->
+    <div id="page-profile" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Profile</div>
+          <div class="page-sub">Manage your account & preferences</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('profile')">Edit Profile</button>
+      </div>
+
+      <div class="profile-content">
+        <div class="profile-card">
+          <div class="profile-avatar-large" id="profileAvatarLarge">HN</div>
+          <div class="profile-info">
+            <h2 id="profileName">Hanan</h2>
+            <p class="profile-email" id="profileEmail">hanan@example.com</p>
+            <span class="tag tag-pro" id="profilePlanText">Pro Plan ✨</span>
+          </div>
+        </div>
+
+        <div class="profile-stats">
+          <div class="stat-card">
+            <div class="stat-number" id="profileHabitsCount">6</div>
+            <div class="stat-label">Active Habits</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="profileGoalsCount">3</div>
+            <div class="stat-label">Goals</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="profileStreak">22</div>
+            <div class="stat-label">Day Streak</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="profileCompletion">78%</div>
+            <div class="stat-label">Weekly Completion</div>
+          </div>
+        </div>
+
+        <div class="profile-section">
+          <h3>Account Settings</h3>
+          <div class="settings-list">
+            <div class="setting-item">
+              <div class="setting-icon">🔔</div>
+              <div class="setting-info">
+                <div class="setting-name">Notifications</div>
+                <div class="setting-desc">Habit reminders & goal updates</div>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" checked onchange="toggleSetting('notifications')">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="setting-item">
+              <div class="setting-icon">🌙</div>
+              <div class="setting-info">
+                <div class="setting-name">Dark Mode</div>
+                <div class="setting-desc">Switch to dark theme</div>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" onchange="toggleSetting('darkMode')">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div class="setting-item">
+              <div class="setting-icon">📊</div>
+              <div class="setting-info">
+                <div class="setting-name">Data Export</div>
+                <div class="setting-desc">Download your data</div>
+              </div>
+              <button class="btn btn-ghost" onclick="exportData()">Export</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-section">
+          <h3>Subscription</h3>
+          <div class="subscription-card">
+            <div class="sub-info">
+              <div class="sub-plan">Pro Plan</div>
+              <div class="sub-price">$9.99/month</div>
+              <div class="sub-features">
+                ✓ Unlimited habits & goals<br>
+                ✓ AI assistant access<br>
+                ✓ Advanced analytics<br>
+                ✓ Priority support
+              </div>
+            </div>
+            <div class="sub-actions">
+              <button class="btn btn-outline" onclick="manageSubscription()">Manage</button>
+              <button class="btn btn-ghost" onclick="cancelSubscription()">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────── AI ASSISTANT ─────────── -->
+    <div id="page-assistant" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">AI Assistant</div>
+          <div class="page-sub">Powered by Claude · Your intelligent life coach</div>
+        </div>
+        <button class="btn btn-ghost" onclick="clearChat()">🗑 Clear chat</button>
+      </div>
+      <div class="chat-wrap">
+        <div class="chat-suggestions" id="chatSuggestions">
+          <div class="chat-suggestion" onclick="useSuggestion(this)">📅 What's on my schedule today?</div>
+          <div class="chat-suggestion" onclick="useSuggestion(this)">💪 How are my habits this week?</div>
+          <div class="chat-suggestion" onclick="useSuggestion(this)">🎯 Which goal needs attention?</div>
+          <div class="chat-suggestion" onclick="useSuggestion(this)">😴 How can I improve my sleep?</div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-msg ai">
+            <div class="chat-avatar ai">🤖</div>
+            <div class="chat-bubble">Hi Hanan! I'm your AI Life Manager assistant powered by Claude. I can help you optimize your schedule, analyze your habits, track health trends, and plan goals. What would you like to work on today?</div>
+          </div>
+        </div>
+        <div class="chat-input-area">
+          <textarea class="chat-input" id="chatInput" rows="1"
+            placeholder="Ask anything about your schedule, habits, health or goals…"
+            onkeydown="chatKeydown(event)"
+            oninput="autoResize(this)"></textarea>
+          <button class="chat-send" id="chatSendBtn" onclick="sendChat()">➤</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────── SMART DEVICES ─────────── -->
+    <div id="page-devices" class="page">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Smart Devices</div>
+          <div class="page-sub">Connected home &amp; wearables</div>
+        </div>
+        <button class="btn btn-primary" onclick="openModal('device')">+ Add Device</button>
+      </div>
+
+      <div class="grid-2" id="deviceGrid">
+        <!-- Lights -->
+        <div class="device-card">
+          <div class="device-icon">💡</div>
+          <div class="device-info">
+            <div class="device-name">Smart Bedroom Lights</div>
+            <div class="device-status" id="lights-status">Warm white · 40% brightness</div>
+          </div>
+          <div class="device-action">
+            <label class="toggle">
+              <input type="checkbox" checked onchange="toggleDeviceById(this,'lights','Smart Bedroom Lights')">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+        <!-- Apple Watch -->
+        <div class="device-card">
+          <div class="device-icon">⌚</div>
+          <div class="device-info">
+            <div class="device-name">Apple Watch Series 9</div>
+            <div class="device-status">❤️ 72 bpm · 🔋 84% · Connected</div>
+          </div>
+          <div class="device-action">
+            <span class="tag tag-green">Active</span>
+          </div>
+        </div>
+        <!-- Thermostat -->
+        <div class="device-card">
+          <div class="device-icon">🌡️</div>
+          <div class="device-info">
+            <div class="device-name">Smart Thermostat</div>
+            <div class="device-status" id="thermo-status">22°C · Auto mode</div>
+          </div>
+          <div class="device-action">
+            <div style="display:flex;align-items:center;gap:6px">
+              <button class="step-btn" onclick="adjustTemp(-1)">−</button>
+              <span id="tempDisplay" style="font-family:var(--font-head);font-weight:700;font-size:14px;min-width:30px;text-align:center">22°</span>
+              <button class="step-btn" onclick="adjustTemp(1)">+</button>
+              <label class="toggle" style="margin-left:6px">
+                <input type="checkbox" checked onchange="toggleDeviceById(this,'thermo','Smart Thermostat')">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <!-- Speaker -->
+        <div class="device-card">
+          <div class="device-icon">🔔</div>
+          <div class="device-info">
+            <div class="device-name">Smart Speaker</div>
+            <div class="device-status" id="speaker-status">Idle · Volume 40%</div>
+          </div>
+          <div class="device-action">
+            <div style="display:flex;align-items:center;gap:8px">
+              <input type="range" min="0" max="100" value="40"
+                style="width:60px;accent-color:var(--accent)"
+                oninput="setSpeakerVol(this.value)">
+              <label class="toggle">
+                <input type="checkbox" onchange="toggleDeviceById(this,'speaker','Smart Speaker')">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <!-- iPhone -->
+        <div class="device-card">
+          <div class="device-icon">📱</div>
+          <div class="device-info">
+            <div class="device-name">iPhone 16</div>
+            <div class="device-status">🔋 67% · Screen time: 2h 14m</div>
+          </div>
+          <div class="device-action">
+            <span class="tag tag-teal">Synced</span>
+          </div>
+        </div>
+        <!-- Sleep Tracker -->
+        <div class="device-card">
+          <div class="device-icon">🛏️</div>
+          <div class="device-info">
+            <div class="device-name">Sleep Tracker Pad</div>
+            <div class="device-status" id="sleep-status">Last night: 7.2h · Score 82</div>
+          </div>
+          <div class="device-action">
+            <label class="toggle">
+              <input type="checkbox" checked onchange="toggleDeviceById(this,'sleep','Sleep Tracker Pad')">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:4px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <div>
+            <div class="card-title">AI Automation Rules</div>
+            <div class="card-sub">Smart routines triggered by your behavior</div>
+          </div>
+          <button class="btn btn-ghost btn-sm" onclick="openModal('automation')">+ Add Rule</button>
+        </div>
+        <div id="automationList">
+          <div class="timeline-item">
+            <div class="timeline-dot" style="background:var(--teal)"></div>
+            <div class="t-body">
+              <div class="t-title">Sleep Mode at 10:30 PM</div>
+              <div class="t-sub">Dims lights, locks phone, enables DND, sets thermostat to 20°C</div>
+            </div>
+            <span class="tag tag-green">Active</span>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot" style="background:var(--accent)"></div>
+            <div class="t-body">
+              <div class="t-title">Focus Mode — Study Session</div>
+              <div class="t-sub">Triggered when calendar shows "lecture" or "assignment"</div>
+            </div>
+            <span class="tag tag-purple">Active</span>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot" style="background:var(--amber)"></div>
+            <div class="t-body">
+              <div class="t-title">Morning Energize at 7:00 AM</div>
+              <div class="t-sub">Sunrise lights, up-tempo playlist, shows today's schedule</div>
+            </div>
+            <span class="tag tag-amber">Active</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ═══════════════════════════════════
+     MODALS
+════════════════════════════════════ -->
+
+<!-- Event Modal -->
+<div class="modal-overlay" id="modal-event" onclick="closeModalBg(event,'event')">
+  <div class="modal">
+    <div class="modal-title">📅 Add New Event</div>
+    <div class="modal-sub">Schedule something to your calendar</div>
+    <div class="form-row">
+      <label class="form-label">Event Title *</label>
+      <input class="form-input" placeholder="e.g. Team standup, Gym session…" id="evTitle"/>
+    </div>
+    <div class="form-row-2">
+      <div>
+        <label class="form-label">Date *</label>
+        <input class="form-input" type="date" id="evDate"/>
+      </div>
+      <div>
+        <label class="form-label">Time *</label>
+        <input class="form-input" type="time" id="evTime"/>
+      </div>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Category</label>
+      <select class="form-input" id="evCat">
+        <option value="purple">🎓 Work / Study</option>
+        <option value="teal">🏃 Health / Fitness</option>
+        <option value="coral">👥 Social</option>
+        <option value="amber">⚡ Personal</option>
+        <option value="green">✅ Task</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('event')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEvent()">Save Event ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- Habit Modal -->
+<div class="modal-overlay" id="modal-habit" onclick="closeModalBg(event,'habit')">
+  <div class="modal">
+    <div class="modal-title">⚡ Add New Habit</div>
+    <div class="modal-sub">Build a new daily routine</div>
+    <div class="form-row">
+      <label class="form-label">Habit Name *</label>
+      <input class="form-input" placeholder="e.g. Morning journaling, Cold shower…" id="habitName"/>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Choose Emoji</label>
+      <div class="emoji-picker" id="emojiPicker">
+        <div class="emoji-opt selected" onclick="selectEmoji(this,'📝')">📝</div>
+        <div class="emoji-opt" onclick="selectEmoji(this,'🧘')">🧘</div>
+        <div class="emoji-opt" onclick="selectEmoji(this,'🏃')">🏃</div>
+        <div class="emoji-opt" onclick="selectEmoji(this,'📖')">📖</div>
+        <div class="emoji-opt" onclick="selectEmoji(this,'💧')">💧</div>
+        <div class="emoji-opt" onclick="selectEmoji(this,'🌙')">🌙</div>
+        <div class="emoji-opt" onclick="selectEmoji(this,'💪')">💪</div>
+        <div class="emoji-opt" onclick="selectEmoji(this,'🎵')">🎵</div>
+        <div class="emoji-opt" onclick="selectEmoji(this,'☀️')">☀️</div>
+        <div class="emoji-opt" onclick="selectEmoji(this,'🥗')">🥗</div>
+      </div>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Frequency</label>
+      <select class="form-input" id="habitFreq">
+        <option>Daily</option>
+        <option>Weekdays only</option>
+        <option>Weekends only</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('habit')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveHabit()">Add Habit ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- Goal Modal -->
+<div class="modal-overlay" id="modal-goal" onclick="closeModalBg(event,'goal')">
+  <div class="modal">
+    <div class="modal-title">🎯 Add New Goal</div>
+    <div class="modal-sub">Define a long-term objective</div>
+    <div class="form-row">
+      <label class="form-label">Goal Title *</label>
+      <input class="form-input" placeholder="e.g. Learn Spanish, Run a 5K…" id="goalTitle"/>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Choose Emoji</label>
+      <div class="emoji-picker" id="goalEmojiPicker">
+        <div class="emoji-opt selected" onclick="selectGoalEmoji(this,'🎯')">🎯</div>
+        <div class="emoji-opt" onclick="selectGoalEmoji(this,'💼')">💼</div>
+        <div class="emoji-opt" onclick="selectGoalEmoji(this,'📚')">📚</div>
+        <div class="emoji-opt" onclick="selectGoalEmoji(this,'💪')">💪</div>
+        <div class="emoji-opt" onclick="selectGoalEmoji(this,'🚀')">🚀</div>
+        <div class="emoji-opt" onclick="selectGoalEmoji(this,'💰')">💰</div>
+        <div class="emoji-opt" onclick="selectGoalEmoji(this,'🎓')">🎓</div>
+        <div class="emoji-opt" onclick="selectGoalEmoji(this,'🌍')">🌍</div>
+      </div>
+    </div>
+    <div class="form-row-2">
+      <div>
+        <label class="form-label">Due Date</label>
+        <input class="form-input" type="date" id="goalDue"/>
+      </div>
+      <div>
+        <label class="form-label">Category</label>
+        <select class="form-input" id="goalCat">
+          <option>Personal</option>
+          <option>Career</option>
+          <option>Health</option>
+          <option>Finance</option>
+          <option>Learning</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <label class="form-label">First Milestone</label>
+      <input class="form-input" placeholder="e.g. Research and create a plan" id="goalMilestone"/>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('goal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveGoal()">Add Goal ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- Nutrition Modal -->
+<div class="modal-overlay" id="modal-nutrition" onclick="closeModalBg(event,'nutrition')">
+  <div class="modal">
+    <div class="modal-title">🥗 Log Meal</div>
+    <div class="modal-sub">Track what you ate</div>
+    <div class="form-row">
+      <label class="form-label">Meal Name *</label>
+      <input class="form-input" placeholder="e.g. Chicken salad, Oatmeal…" id="mealName"/>
+    </div>
+    <div class="form-row-2">
+      <div>
+        <label class="form-label">Calories</label>
+        <input class="form-input" type="number" placeholder="kcal" id="mealCals"/>
+      </div>
+      <div>
+        <label class="form-label">Protein (g)</label>
+        <input class="form-input" type="number" placeholder="g" id="mealProtein"/>
+      </div>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Meal Type</label>
+      <select class="form-input" id="mealType">
+        <option>Breakfast</option>
+        <option>Lunch</option>
+        <option>Dinner</option>
+        <option>Snack</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('nutrition')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveMeal()">Log Meal ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- Device Modal -->
+<div class="modal-overlay" id="modal-device" onclick="closeModalBg(event,'device')">
+  <div class="modal">
+    <div class="modal-title">📱 Add Device</div>
+    <div class="modal-sub">Connect a new smart device</div>
+    <div class="form-row">
+      <label class="form-label">Device Name *</label>
+      <input class="form-input" placeholder="e.g. Smart TV, Air Purifier…" id="devName"/>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Device Type</label>
+      <select class="form-input" id="devType">
+        <option value="💡">💡 Light</option>
+        <option value="🌡️">🌡️ Climate</option>
+        <option value="🔔">🔔 Speaker</option>
+        <option value="📺">📺 Display</option>
+        <option value="🔒">🔒 Security</option>
+        <option value="⌚">⌚ Wearable</option>
+        <option value="🏠">🏠 Other</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('device')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveDevice()">Connect Device ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- Automation Modal -->
+<div class="modal-overlay" id="modal-automation" onclick="closeModalBg(event,'automation')">
+  <div class="modal">
+    <div class="modal-title">⚡ Add Automation Rule</div>
+    <div class="modal-sub">Create a smart routine</div>
+    <div class="form-row">
+      <label class="form-label">Rule Name *</label>
+      <input class="form-input" placeholder="e.g. Work from home mode" id="autoName"/>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Description</label>
+      <input class="form-input" placeholder="What does this rule do?" id="autoDesc"/>
+    </div>
+    <div class="form-row">
+      <label class="form-label">Trigger</label>
+      <select class="form-input" id="autoTrigger">
+        <option>Time-based (daily)</option>
+        <option>Calendar event detected</option>
+        <option>Location-based</option>
+        <option>Manual activation</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('automation')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveAutomation()">Save Rule ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- Profile Modal -->
+<div class="modal-overlay" id="modal-profile" onclick="closeModalBg(event,'profile')">
+  <div class="modal">
+    <div class="modal-title">✏️ Edit Profile</div>
+    <div class="modal-sub">Update your profile details and subscription plan</div>
+    <div class="form-row">
+      <label class="form-label">Name *</label>
+      <input class="form-input" id="profileNameInput" placeholder="Hanan" />
+    </div>
+    <div class="form-row">
+      <label class="form-label">Initials</label>
+      <input class="form-input" id="profileInitialsInput" placeholder="HN" />
+    </div>
+    <div class="form-row">
+      <label class="form-label">Email</label>
+      <input class="form-input" type="email" id="profileEmailInput" placeholder="hanan@example.com" />
+    </div>
+    <div class="form-row">
+      <label class="form-label">Plan</label>
+      <select class="form-input" id="profilePlanInput">
+        <option>Free</option>
+        <option selected>Pro</option>
+        <option>Premium</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal('profile')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveProfile()">Save Profile ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
